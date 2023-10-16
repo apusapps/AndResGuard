@@ -6,7 +6,7 @@ import com.tencent.mm.resourceproguard.InputParam
 import com.tencent.mm.resourceproguard.Main
 import org.gradle.api.DefaultTask
 import org.gradle.api.GradleException
-import org.gradle.api.provider.Property
+import org.gradle.api.tasks.Internal
 import org.gradle.api.tasks.TaskAction
 
 /**
@@ -15,8 +15,12 @@ import org.gradle.api.tasks.TaskAction
  * @author Sim Sun (sunsj1231@gmail.com)
  */
 class AndResGuardTask extends DefaultTask {
+
+  @Internal
   AndResGuardExtension configuration
+  @Internal
   def android
+  @Internal
   def buildConfigs = []
 
   AndResGuardTask() {
@@ -49,20 +53,13 @@ class AndResGuardTask extends DefaultTask {
             outputFile = outputFile ?: output.outputFile
           }
 
-          def variantInfo
-          if (variant.variantData.hasProperty("variantConfiguration")) {
-            variantInfo = variant.variantData.variantConfiguration
-          } else {
-            variantInfo = variant.variantData.variantDslInfo
-          }
 
-          def applicationId = variantInfo.applicationId instanceof Property
-              ? variantInfo.applicationId.get()
-              : variantInfo.applicationId
+          def applicationId = variant.applicationId
+
 
           buildConfigs << new BuildInfo(
               outputFile,
-              variantInfo.signingConfig,
+              variant.signingConfig,
               applicationId,
               variant.buildType.name,
               variant.productFlavors,
@@ -92,6 +89,7 @@ class AndResGuardTask extends DefaultTask {
     return "${file.parent}/AndResGuard_${fileName}/"
   }
 
+  @Internal
   def getZipAlignPath() {
     return "${android.getSdkDirectory().getAbsolutePath()}/build-tools/${android.buildToolsVersion}/zipalign"
   }

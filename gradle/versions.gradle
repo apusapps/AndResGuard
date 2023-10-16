@@ -1,0 +1,40 @@
+def versions = [:]
+versions.agp = "7.0.3"
+versions.andresguard = ANDRESGUARD_VESSION
+// android
+versions.support = "28.0.0"
+versions.commonsIO = "2.6"
+
+def artifact_id_core = "AndResGuard-core"
+def artifact_id_plugin = "AndResGuard-gradle-plugin"
+
+versions[artifact_id_core] = versions.andresguard
+versions[artifact_id_plugin] = versions.andresguard
+
+// plugin
+versions.shadow = "4.0.4"
+versions.digital = "3.4.0"
+versions.osdetector = "1.6.0"
+
+ext.versions = versions
+
+ext.deps = [:]
+// gradle
+def gradle = [:]
+gradle.agp = "com.android.tools.build:gradle:${versions.agp}"
+deps.gradle = gradle
+// plugin
+def plugin = [:]
+plugin.digital = "digital.wup:android-maven-publish:${versions.digital}"
+plugin.shadow = "com.github.jengelman.gradle.plugins:shadow:${versions.shadow}"
+plugin.osdetector = "com.google.gradle:osdetector-gradle-plugin:${versions.osdetector}"
+deps.plugin = plugin
+// library
+deps.commonsIO = "commons-io:commons-io:${versions["commonsIO"]}"
+// andresguard
+def andresguard = [:]
+andresguard.core = "$GROUP_ID:$artifact_id_core:${versions["andresguard"]}"
+andresguard.plugin = "$GROUP_ID:$artifact_id_plugin:${versions["andresguard"]}"
+deps.andresguard = andresguard
+
+ext.deps = deps

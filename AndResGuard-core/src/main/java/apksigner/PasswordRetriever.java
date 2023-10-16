@@ -166,6 +166,12 @@ class PasswordRetriever implements AutoCloseable {
   private static Charset getConsoleEncoding() {
     // IMPLEMENTATION NOTE: There is no public API for obtaining the console's character
     // encoding. We thus cheat by using implementation details of the most popular JVMs.
+
+
+    if (!canReadConsoleEncoding()) {
+      return Charset.defaultCharset();
+    }
+
     String consoleCharsetName;
     try {
       Method encodingMethod = Console.class.getDeclaredMethod("encoding");
@@ -197,6 +203,16 @@ class PasswordRetriever implements AutoCloseable {
       return defaultCharset;
     }
   }
+
+
+  private static boolean canReadConsoleEncoding() {
+    String versionString = System.getProperty("java.specification.version");
+    if (versionString == null) {
+      return true;
+    }
+    return versionString.startsWith("1.");
+  }
+
 
   private static byte[] readEncodedPassword(InputStream in) throws IOException {
     ByteArrayOutputStream result = new ByteArrayOutputStream();

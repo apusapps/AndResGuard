@@ -1,20 +1,24 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 buildscript {
+  apply from: rootProject.file("gradle/config.gradle")
   repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "https://plugins.gradle.org/m2/" }
     google()
-    jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:4.1.2'
-    classpath 'com.jfrog.bintray.gradle:gradle-bintray-plugin:1.8.4'
-    classpath 'com.ofg:uptodate-gradle-plugin:1.6.2'
+    classpath deps.plugin.digital
+    classpath deps.plugin.shadow
+    classpath deps.gradle.agp
   }
 }
 
 allprojects {
   repositories {
+    mavenLocal()
+    maven { url "https://plugins.gradle.org/m2/" }
     google()
-    jcenter()
   }
   tasks.withType(JavaCompile) {
     sourceCompatibility = rootProject.ext.javaVersion

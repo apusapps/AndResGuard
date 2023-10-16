@@ -1,5 +1,4 @@
 //apply plugin: 'com.google.osdetector'
-apply plugin: 'maven'
 apply plugin: 'maven-publish'
 apply plugin: 'java'
 
@@ -49,5 +48,3 @@ publishing {
     }
   }
 }
-
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

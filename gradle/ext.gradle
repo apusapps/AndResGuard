@@ -1,0 +1,24 @@
+ext {
+    GROUP_ID = "com.xal.publicrepository"
+}
+
+// 读取 local.properties 文件内容
+def localFile = project.rootProject.file("local.properties")
+if (localFile.exists()) {
+    println "======== read local.properties ========"
+    Properties properties = new Properties()
+    properties.load(localFile.newDataInputStream())
+    // 逐行读取文件
+    localFile.eachLine { line ->
+        if (line.startsWith("#")) {
+            return
+        }
+        def arr = line.split("=")
+        ext.set(arr[0], arr[1])
+        System.setProperty(arr[0], arr[1])
+    }
+    ext.properties.keySet().forEach {
+        println "\t${it} : ${ext.get(it)}"
+    }
+    println "======== read local.properties ========"
+}
